@@ -1,4 +1,4 @@
-package client;
+п»їpackage client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,9 +10,9 @@ import java.util.Scanner;
 import main.Const;
 
 /**
- * Обеспечивает работу программы в режиме клиента
+ * РћР±РµСЃРїРµС‡РёРІР°РµС‚ СЂР°Р±РѕС‚Сѓ РїСЂРѕРіСЂР°РјРјС‹ РІ СЂРµР¶РёРјРµ РєР»РёРµРЅС‚Р°
  * 
- * @author Влад
+ * @author Р’Р»Р°Рґ
  */
 public class Client {
 	private BufferedReader in;
@@ -20,32 +20,32 @@ public class Client {
 	private Socket socket;
 
 	/**
-	 * Запрашивает у пользователя ник и организовывает обмен сообщениями с
-	 * сервером
+	 * Р—Р°РїСЂР°С€РёРІР°РµС‚ Сѓ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РЅРёРє Рё РѕСЂРіР°РЅРёР·РѕРІС‹РІР°РµС‚ РѕР±РјРµРЅ СЃРѕРѕР±С‰РµРЅРёСЏРјРё СЃ
+	 * СЃРµСЂРІРµСЂРѕРј
 	 */
 	public Client() {
 		Scanner scan = new Scanner(System.in);
 
-		System.out.println("Введите IP для подключения к серверу.");
-		System.out.println("Формат: xxx.xxx.xxx.xxx");
+		System.out.println("Р’РІРµРґРёС‚Рµ IP РґР»СЏ РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє СЃРµСЂРІРµСЂСѓ.");
+		System.out.println("Р¤РѕСЂРјР°С‚: xxx.xxx.xxx.xxx");
 
 		String ip = scan.nextLine();
 
 		try {
-			// Подключаемся в серверу и получаем потоки(in и out) для передачи сообщений
+			// РџРѕРґРєР»СЋС‡Р°РµРјСЃСЏ РІ СЃРµСЂРІРµСЂСѓ Рё РїРѕР»СѓС‡Р°РµРј РїРѕС‚РѕРєРё(in Рё out) РґР»СЏ РїРµСЂРµРґР°С‡Рё СЃРѕРѕР±С‰РµРЅРёР№
 			socket = new Socket(ip, Const.Port);
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new PrintWriter(socket.getOutputStream(), true);
 
-			System.out.println("Введите свой ник:");
+			System.out.println("Р’РІРµРґРёС‚Рµ СЃРІРѕР№ РЅРёРє:");
 			out.println(scan.nextLine());
 
-			// Запускаем вывод всех входящих сообщений в консоль
+			// Р—Р°РїСѓСЃРєР°РµРј РІС‹РІРѕРґ РІСЃРµС… РІС…РѕРґСЏС‰РёС… СЃРѕРѕР±С‰РµРЅРёР№ РІ РєРѕРЅСЃРѕР»СЊ
 			Resender resend = new Resender();
 			resend.start();
 
-			// Пока пользователь не введёт "exit" отправляем на сервер всё, что
-			// введено из консоли
+			// РџРѕРєР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ РІРІРµРґС‘С‚ "exit" РѕС‚РїСЂР°РІР»СЏРµРј РЅР° СЃРµСЂРІРµСЂ РІСЃС‘, С‡С‚Рѕ
+			// РІРІРµРґРµРЅРѕ РёР· РєРѕРЅСЃРѕР»Рё
 			String str = "";
 			while (!str.equals("exit")) {
 				str = scan.nextLine();
@@ -60,7 +60,7 @@ public class Client {
 	}
 
 	/**
-	 * Закрывает входной и выходной потоки и сокет
+	 * Р—Р°РєСЂС‹РІР°РµС‚ РІС…РѕРґРЅРѕР№ Рё РІС‹С…РѕРґРЅРѕР№ РїРѕС‚РѕРєРё Рё СЃРѕРєРµС‚
 	 */
 	private void close() {
 		try {
@@ -68,30 +68,30 @@ public class Client {
 			out.close();
 			socket.close();
 		} catch (Exception e) {
-			System.err.println("Потоки не были закрыты!");
+			System.err.println("РџРѕС‚РѕРєРё РЅРµ Р±С‹Р»Рё Р·Р°РєСЂС‹С‚С‹!");
 		}
 	}
 
 	/**
-	 * Класс в отдельной нити пересылает все сообщения от сервера в консоль.
-	 * Работает пока не будет вызван метод setStop().
+	 * РљР»Р°СЃСЃ РІ РѕС‚РґРµР»СЊРЅРѕР№ РЅРёС‚Рё РїРµСЂРµСЃС‹Р»Р°РµС‚ РІСЃРµ СЃРѕРѕР±С‰РµРЅРёСЏ РѕС‚ СЃРµСЂРІРµСЂР° РІ РєРѕРЅСЃРѕР»СЊ.
+	 * Р Р°Р±РѕС‚Р°РµС‚ РїРѕРєР° РЅРµ Р±СѓРґРµС‚ РІС‹Р·РІР°РЅ РјРµС‚РѕРґ setStop().
 	 * 
-	 * @author Влад
+	 * @author Р’Р»Р°Рґ
 	 */
 	private class Resender extends Thread {
 
 		private boolean stoped;
 		
 		/**
-		 * Прекращает пересылку сообщений
+		 * РџСЂРµРєСЂР°С‰Р°РµС‚ РїРµСЂРµСЃС‹Р»РєСѓ СЃРѕРѕР±С‰РµРЅРёР№
 		 */
 		public void setStop() {
 			stoped = true;
 		}
 
 		/**
-		 * Считывает все сообщения от сервера и печатает их в консоль.
-		 * Останавливается вызовом метода setStop()
+		 * РЎС‡РёС‚С‹РІР°РµС‚ РІСЃРµ СЃРѕРѕР±С‰РµРЅРёСЏ РѕС‚ СЃРµСЂРІРµСЂР° Рё РїРµС‡Р°С‚Р°РµС‚ РёС… РІ РєРѕРЅСЃРѕР»СЊ.
+		 * РћСЃС‚Р°РЅР°РІР»РёРІР°РµС‚СЃСЏ РІС‹Р·РѕРІРѕРј РјРµС‚РѕРґР° setStop()
 		 * 
 		 * @see java.lang.Thread#run()
 		 */
@@ -103,7 +103,7 @@ public class Client {
 					System.out.println(str);
 				}
 			} catch (IOException e) {
-				System.err.println("Ошибка при получении сообщения.");
+				System.err.println("РћС€РёР±РєР° РїСЂРё РїРѕР»СѓС‡РµРЅРёРё СЃРѕРѕР±С‰РµРЅРёСЏ.");
 				e.printStackTrace();
 			}
 		}
